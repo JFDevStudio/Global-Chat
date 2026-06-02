@@ -22,6 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // El cliente de Supabase viene heredado desde config.js a través de window
     const supabase = window.supabaseClient;
 
+    // --- PERSISTENCIA DE SESIÓN ---
+    // Si el usuario ya está logueado, lo mandamos directo al chat
+    const verificarSesionActiva = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session && session.user?.email_confirmed_at) {
+            console.log("Sesión activa detectada, redirigiendo...");
+            window.location.href = "chat.html";
+        }
+    };
+
+    // Ejecutamos la comprobación al cargar la página
+    verificarSesionActiva();
+
     // Estado local: 'login' o 'registro' (empezamos en login por defecto)
     let isLoginMode = true; 
     usernameGroup.classList.add("hidden"); // Escondemos el campo username en login

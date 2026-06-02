@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña 🔑</title>
+    <link rel="stylesheet" href="style.css?v=1.0.1">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="auth-page">
+    <section class="auth-box">
+        <h2>Nueva Contraseña 🔑</h2>
+        <p class="auth-subtitle">Ingresa tu nueva contraseña para recuperar el acceso a tu cuenta.</p>
+        
+        <form id="recovery-form">
+            <div class="input-group">
+                <label for="new-password">Nueva Contraseña</label>
+                <input type="password" id="new-password" placeholder="Mínimo 6 caracteres" required minlength="6">
+            </div>
+            <button type="submit" id="recovery-submit-btn">Actualizar Contraseña 🚀</button>
+        </form>
+        <p id="recovery-msg" class="success-msg hidden"></p>
+        <p id="recovery-error" class="error-msg hidden"></p>
+    </section>
+
+    <script src="config.js?v=1.0.1"></script>
+    <script src="recuperar.js?v=1.0.1"></script>
+</body>
+</html>

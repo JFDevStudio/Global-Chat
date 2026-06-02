@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // 🛡️ SEGURIDAD: Bloqueo inmediato si el usuario está baneado
         if (miPerfil.baneado) {
-            mostrarAviso("Tu cuenta ha sido baneada permanentemente. Cerrando sesión... ⛔");
+            mostrarAviso("Has sido expulsado permanentemente del servidor. ⛔", 10000);
             setTimeout(async () => {
                 await supabase.auth.signOut();
                 window.location.href = "index.html";
@@ -372,12 +372,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // 🛡️ SEGURIDAD: Verificar si el usuario está muteado antes de enviar
-        if (miPerfil.muteado_hasta) {
+        if (miPerfil.muteado_hasta && miPerfil.rol === 'usuario') {
             const ahora = new Date();
             const muteHasta = new Date(miPerfil.muteado_hasta);
             if (ahora < muteHasta) {
                 const minutosRestantes = Math.ceil((muteHasta - ahora) / (1000 * 60));
-                mostrarAviso(`Muteado: Te quedan ${minutosRestantes} minutos de silencio. 🤫`);
+                mostrarAviso(`🤫 Estás silenciado. Te quedan aproximadamente ${minutosRestantes} minuto(s).`);
                 return;
             }
         }

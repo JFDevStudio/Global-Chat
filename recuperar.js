@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const recoveryForm = document.getElementById("recovery-form");
     const newPasswordInput = document.getElementById("new-password");
     const recoverySubmitBtn = document.getElementById("recovery-submit-btn");
@@ -6,6 +6,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const recoveryError = document.getElementById("recovery-error");
 
     const supabase = window.supabaseClient;
+
+    // 1. Verificar si hay una sesión activa (el enlace de Supabase la inicia automáticamente)
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+        recoveryError.innerText = "El enlace de recuperación es inválido o ha expirado. Por favor, solicita uno nuevo.";
+        recoveryError.classList.remove("hidden");
+        recoveryForm.classList.add("hidden");
+        return;
+    }
 
     recoveryForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -26,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             recoveryForm.classList.add("hidden");
 
             setTimeout(() => {
-                window.location.href = "index.html"; 
+                window.location.href = "index.html";
             }, 3000);
 
         } catch (error) {

@@ -3,55 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrar al Chat 🚀</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Sala de Chat Global 🌐</title>
+    <link rel="stylesheet" href="../style.css?v=1.0.1">
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="auth-page">
-    <section class="auth-box">
-        <h2>Bienvenido 💬</h2>
-        <p id="auth-subtitle" class="auth-subtitle">Inicia sesión para empezar a chatear.</p>
-        
-        <form id="auth-form">
-            <div id="username-group" class="input-group hidden">
-                <label for="auth-username">Nombre de Usuario</label>
-                <input type="text" id="auth-username" placeholder="Ej: Juanito99">
+<body>
+
+    <main class="chat-box">
+        <header class="chat-header">
+            <div class="user-info">
+                <span id="user-display-name" class="username-title">Cargando...</span>
+                <span id="user-level-badge" class="level-badge">Nivel 1</span>
+                <span id="user-role-badge" class="role-badge">Usuario</span>
             </div>
-            <div class="input-group">
-                <label for="auth-email">Correo Electrónico</label>
-                <input type="email" id="auth-email" placeholder="tu@email.com" required>
+            <button id="logout-btn" class="secondary-btn">Cerrar Sesión 🚪</button>
+        </header>
+
+        <div class="chat-workspace">
+            
+            <div class="global-chat-panel">
+                <h2 class="chat-panel-title">Chat Global 🌐</h2>
+                <div id="chat-messages" class="messages-container">
+                    </div>
+
+                <form id="message-form" class="send-bar">
+                    <input type="text" id="message-input" placeholder="Escribe un mensaje global..." maxlength="250" autocomplete="off" required>
+                    <button type="submit">Enviar ⚡</button>
+                </form>
+                <div id="cooldown-timer" class="cooldown-text hidden">Espera 5 segundos para enviar otro mensaje.</div>
             </div>
-            <div class="input-group">
-                <label for="auth-password">Contraseña</label>
-                <input type="password" id="auth-password" placeholder="••••••••" required>
-            </div>
-            <button type="submit" id="auth-submit-btn">Iniciar Sesión 🚀</button>
-        </form>
 
-        <div class="auth-links">
-            <a href="#" id="toggle-auth-mode">¿No tienes cuenta? Regístrate aquí</a>
-            <a href="#" class="forgot-pass">¿Olvidaste tu contraseña?</a>
+            <aside class="side-panel">
+                <div class="side-section">
+                    <h4>Mensajería Privada 🔒</h4>
+                    <div class="input-row">
+                        <input type="text" id="target-private-user" placeholder="Buscar usuario...">
+                        <button id="request-private-btn">Pedir Privado</button>
+                    </div>
+                    
+                    <div id="chats-activos-list" class="list-container">
+                        <p class="empty-list">No tienes chats activos.</p>
+                    </div>
+
+                    <h4 style="margin-top: 20px;">Solicitudes Pendientes ⏳</h4>
+                    <div id="solicitudes-pendientes-list" class="list-container">
+                        <p class="empty-list">No tienes solicitudes pendientes.</p>
+                    </div>
+                </div>
+
+                <div class="side-section">
+                    <h4>Temas Desbloqueables 🎨</h4>
+                    <div class="themes-grid">
+                        <button class="theme-btn active" data-theme="default">Clásico</button>
+                        <button class="theme-btn locked" title="Bloqueado hasta Nivel 5">Futurista (Nivel 5) 🔒</button>
+                        <button class="theme-btn locked" title="Bloqueado hasta Nivel 10">Cyberpunk (Nivel 10) 🔒</button>
+                    </div>
+                </div>
+            </aside>
+
         </div>
+    </main>
 
-        <!-- Mensajes de estado -->
-        <p id="auth-error" class="error-msg hidden"></p>
-
-        <!-- Caja de éxito (Oculta por defecto) -->
-        <div id="account-created-box" class="account-created-box hidden">
-            <h3>¡Cuenta creada! 🎉</h3>
-            <p>Hemos enviado un correo de confirmación. Por favor, verifica tu bandeja de entrada antes de entrar.</p>
-            <button id="continue-to-login-btn">Volver al Login</button>
-        </div>
-
-        <!-- Caja de Rate Limit (Oculta por defecto) -->
-        <div id="rate-limit-box" class="rate-limit-alert hidden">
-            <h3>Demasiados intentos ⏳</h3>
-            <p>Por seguridad, espera unos minutos antes de intentar de nuevo.</p>
-            <button id="close-rate-limit-btn">Entendido</button>
-        </div>
-    </section>
-
-    <script src="config.js"></script>
-    <script src="auth.js"></script>
+    <script defer src="../config.js?v=1.0.1"></script>
+    <script defer src="chat.js?v=1.0.1"></script>
 </body>
 </html>
