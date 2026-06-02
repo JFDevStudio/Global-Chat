@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña - Global Chat 🔑</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="auth-page">
+    <main class="app-container">
+        <section class="auth-box">
+            <h2>¿Olvidaste tu contraseña? 🔑</h2>
+            <p class="auth-subtitle">Ingresa tu correo electrónico y te enviaremos un enlace para que puedas crear una nueva contraseña.</p>
+
+            <form id="request-recovery-form">
+                <div class="input-group">
+                    <label for="recovery-email">Correo Electrónico</label>
+                    <input type="email" id="recovery-email" placeholder="ejemplo@correo.com" required>
+                </div>
+                <button type="submit" id="request-submit-btn">Enviar Enlace de Recuperación 🚀</button>
+                <p id="recovery-error" class="error-msg hidden"></p>
+            </form>
+
+            <div id="recovery-success-box" class="account-created-box hidden">
+                <h3>¡Enlace Enviado! 📧</h3>
+                <p>Revisa tu bandeja de entrada. Te hemos enviado las instrucciones para restablecer tu contraseña.</p>
+                <button id="back-to-login-btn" class="secondary-btn">Continuar al Login 🚪</button>
+            </div>
+
+            <div class="auth-links">
+                <a href="index.html">Volver al inicio de sesión</a>
+            </div>
+        </section>
+    </main>
+    <script src="config.js"></script>
+    <script src="solicitar_recuperacion.js"></script>
+</body>
+</html>

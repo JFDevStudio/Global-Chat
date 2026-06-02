@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const continueToLoginBtn = document.getElementById("continue-to-login-btn");
     const rateLimitBox = document.getElementById("rate-limit-box");
     const closeRateLimitBtn = document.getElementById("close-rate-limit-btn");
-    const forgotPassLink = document.querySelector(".forgot-pass");
 
     // El cliente de Supabase viene heredado desde config.js a través de window
     const supabase = window.supabaseClient;
@@ -92,24 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Lógica para enviar correo de recuperación
-    forgotPassLink.addEventListener("click", async (e) => {
-        e.preventDefault();
-        const email = prompt("Introduce tu correo electrónico para restablecer tu contraseña:");
-        
-        if (email) {
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: 'http://127.0.0.1:3000/recuperar.html',
-            });
-
-            if (error) {
-                alert("Error al enviar el correo: " + error.message);
-            } else {
-                alert("Se ha enviado un correo de recuperación. ¡Revisa tu bandeja de entrada!");
-            }
-        }
-    });
-
     // 3. EVENTO PRINCIPAL: Enviar Formulario (Submit)
     authForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -142,7 +123,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 // b) Crear el usuario en la autenticación central de Supabase
-                const { data: authData, error: authErrorResult } = await supabase.auth.signUp({ email, password });
+                const { data: authData, error: authErrorResult } = await supabase.auth.signUp({ 
+                    email, 
+                    password,
+                    options: {
+                        emailRedirectTo: window.location.origin + '/confirmado.html'
+                    }
+                });
                 if (authErrorResult) throw authErrorResult;
 
                 const user = authData.user;
