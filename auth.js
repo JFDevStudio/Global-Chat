@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     email, 
                     password,
                     options: {
-                        emailRedirectTo: window.location.origin + '/confirmado.html'
+                        emailRedirectTo: 'https://jfdevstudio.github.io/Global-Chat/confirmado.html'
                     }
                 });
                 if (authErrorResult) throw authErrorResult;

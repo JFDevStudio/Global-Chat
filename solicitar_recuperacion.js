@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
                 // Redirige al usuario a la página de establecer nueva contraseña
-                redirectTo: window.location.origin + '/recuperar.html',
+                redirectTo: 'https://jfdevstudio.github.io/Global-Chat/recuperar.html',
             });
 
             if (error) throw error;
