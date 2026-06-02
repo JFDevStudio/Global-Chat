@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sala de Chat Global 🌐</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <main class="chat-box">
+        <header class="chat-header">
+            <div class="user-info">
+                <span id="user-display-name" class="username-title">Cargando...</span>
+                <span id="user-level-badge" class="level-badge">Nivel 1</span>
+                <span id="user-role-badge" class="role-badge">Usuario</span>
+            </div>
+            <div class="header-actions">
+                <button id="logout-btn" class="secondary-btn">Cerrar Sesión 🚪</button>
+                <button id="menu-toggle" class="menu-btn-hamburguer">☰</button>
+            </div>
+        </header>
+
+        <div class="chat-workspace">
+            
+            <div class="global-chat-panel">
+                <h2 class="chat-panel-title">Chat Global 🌐</h2>
+                <div id="chat-notification" class="chat-notification hidden"></div>
+                <div id="chat-messages" class="messages-container">
+                    </div>
+
+                <form id="message-form" class="send-bar">
+                    <input type="text" id="message-input" placeholder="Escribe un mensaje global..." maxlength="250" autocomplete="off" required>
+                    <button type="submit">Enviar ⚡</button>
+                </form>
+                <div id="cooldown-timer" class="cooldown-text hidden">Espera 5 segundos para enviar otro mensaje.</div>
+            </div>
+
+            <aside class="side-panel">
+                <div class="side-section">
+                    <h4>Mensajería Privada 🔒</h4>
+                    <div class="input-row">
+                        <input type="text" id="target-private-user" placeholder="Buscar usuario...">
+                        <button id="request-private-btn">Pedir Privado</button>
+                    </div>
+                    
+                    <div id="chats-activos-list" class="list-container">
+                        <p class="empty-list">No tienes chats activos.</p>
+                    </div>
+
+                    <h4 style="margin-top: 20px;">Solicitudes Pendientes ⏳</h4>
+                    <div id="solicitudes-pendientes-list" class="list-container">
+                        <p class="empty-list">No tienes solicitudes pendientes.</p>
+                    </div>
+                </div>
+
+                <div class="side-section">
+                    <h4>Temas Desbloqueables 🎨</h4>
+                    <div class="themes-grid">
+                        <button class="theme-btn active" data-theme="default" data-level="1">Clásico</button>
+                        <button class="theme-btn locked" data-theme="futurista" data-level="5" title="Bloqueado hasta Nivel 5" disabled>Futurista (Nivel 5) 🔒</button>
+                        <button class="theme-btn locked" data-theme="cyberpunk" data-level="10" title="Bloqueado hasta Nivel 10" disabled>Cyberpunk (Nivel 10) 🔒</button>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <script defer src="config.js"></script>
+    <script defer src="chat.js"></script>
+</body>
+</html>

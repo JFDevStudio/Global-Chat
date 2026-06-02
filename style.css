@@ -1,0 +1,926 @@
+/* ==========================================
+   VARIABLES DE ESTILO GLOBAL
+   ========================================== */
+:root {
+    --bg-main: #0f172a;       /* Azul oscuro profundo */
+    --bg-card: #1e293b;       /* Azul grisáceo para contenedores */
+    --bg-dark: #020617;       /* Negro azulado para terminal/inputs */
+    --text-main: #f8fafc;     /* Blanco suave */
+    --text-muted: #94a3b8;    /* Gris para subtítulos y tiempos */
+    --accent: #38bdf8;        /* Celeste brillante (Enlaces, nombres) */
+    --error: #ef4444;         /* Rojo alertas */
+    --success: #22c55e;       /* Verde éxitos y online */
+    --warning: #eab308;       /* Amarillo para niveles */
+    --purple: #a855f7;        /* Púrpura para roles administrativos */
+}
+
+/* ==========================================
+   CONFIGURACIÓN BASE Y RESETEO
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+body.auth-page {
+    position: static;
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Clases de utilidad */
+.hidden { display: none !important; }
+
+/* ==========================================
+   COMPONENTES: VISTAS DE AUTENTICACIÓN 🔐
+   (Login, Registro y Recuperación)
+   ========================================== */
+.auth-box {
+    background: var(--bg-card);
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    text-align: center;
+}
+
+.auth-box h2 {
+    margin-bottom: 8px;
+    color: var(--accent);
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.auth-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+input {
+    background: var(--bg-dark);
+    border: 1px solid #334155;
+    padding: 12px;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    border-color: var(--accent);
+}
+
+/* Botones */
+button {
+    background: var(--accent);
+    color: var(--bg-dark);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Botón Hamburguesa */
+.menu-btn-hamburguer {
+    display: none;
+    background: var(--bg-card);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.secondary-btn {
+    background: #334155;
+    color: white;
+    width: auto;
+    font-size: 0.9rem;
+    padding: 8px 15px;
+}
+
+/* Enlaces de navegación interna */
+.auth-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+    font-size: 0.85rem;
+}
+
+.auth-links a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.auth-links .forgot-pass {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* Alertas de Estado */
+.error-msg {
+    color: var(--error);
+    font-size: 0.85rem;
+    margin-top: 15px;
+    text-align: center;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.success-msg {
+    color: var(--success);
+    font-size: 0.85rem;
+    margin-top: 15px;
+    text-align: center;
+    background: rgba(34, 197, 94, 0.1);
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.account-created-box {
+    text-align: center;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.account-created-box h3 {
+    color: var(--success);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.account-created-box p {
+    color: var(--text-main);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 18px;
+}
+
+.rate-limit-alert {
+    text-align: center;
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.35);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.rate-limit-alert h3 {
+    color: var(--warning);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.rate-limit-alert p {
+    color: var(--text-main);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 18px;
+}
+
+
+/* ==========================================
+   COMPONENTE: CORE DEL CHAT (GLOBAL/PRIVADO) 💬
+   ========================================== */
+.chat-box {
+    background: var(--bg-main);
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Barra superior de estado */
+.chat-header {
+    background: var(--bg-dark);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1e293b;
+    flex-shrink: 0;
+    min-height: 50px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.username-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Sistema de Rangos y Niveles (Badges) */
+.level-badge {
+    background: var(--warning);
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.role-badge {
+    background: var(--purple);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-indicator.online {
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
+}
+
+/* Workspace de doble columna */
+.chat-workspace {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+@media (max-width: 1024px) {
+    .chat-box {
+        border-radius: 0;
+    }
+    
+    .chat-workspace {
+        grid-template-columns: 1fr 280px;
+    }
+    
+    .side-panel {
+        width: 280px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 850px) {
+    .chat-workspace {
+        grid-template-columns: 1fr;
+    }
+    
+    .chat-header {
+        padding: 12px 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .user-info {
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .username-title {
+        font-size: 1rem;
+    }
+    
+    .level-badge, .role-badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+    
+    .secondary-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 600px) {
+    html, body {
+        font-size: 14px;
+    }
+    
+    .chat-box {
+        height: 100vh;
+        width: 100%;
+    }
+    
+    .chat-header {
+        padding: 10px 12px;
+    }
+    
+    .username-title {
+        font-size: 0.95rem;
+    }
+    
+    .level-badge, .role-badge {
+        font-size: 0.65rem;
+    }
+    
+    .messages-container {
+        padding: 12px;
+        gap: 8px;
+    }
+    
+    .msg-block {
+        max-width: 90%;
+        padding: 8px 12px;
+    }
+    
+    .msg-meta {
+        font-size: 0.7rem;
+    }
+    
+    .msg-text {
+        font-size: 0.9rem;
+    }
+    
+    .send-bar {
+        padding: 10px;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .send-bar input {
+        min-height: 36px;
+        font-size: 16px;
+        padding: 10px;
+    }
+    
+    .send-bar button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        min-height: 36px;
+    }
+    
+    .cooldown-text {
+        font-size: 0.75rem;
+        padding: 4px;
+    }
+}
+
+/* ==========================================
+   CONTENEDOR DE MENSAJES Y FILAS LOGGING
+   ========================================== */
+.global-chat-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: rgba(2, 6, 23, 0.3);
+    overflow: hidden;
+    min-height: 0;
+}
+
+.messages-container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+}
+
+/* Bloque del mensaje */
+.msg-block {
+    background: var(--bg-dark);
+    padding: 10px 14px;
+    border-radius: 12px;
+    max-width: 80%;
+    align-self: flex-start;
+    border-left: 4px solid var(--accent);
+}
+
+/* Si el mensaje lo envías tú (Alineación derecha) */
+.msg-block.me {
+    align-self: flex-end;
+    border-left: none;
+    border-right: 4px solid var(--success);
+    background: #1e293b;
+}
+
+.msg-meta {
+    display: flex;
+    gap: 8px;
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+}
+
+.msg-user {
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.msg-time {
+    color: var(--text-muted);
+}
+
+.msg-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+/* Barra inferior de escritura */
+.send-bar {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    background: #111827;
+    border-top: 1px solid #334155;
+    flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 55px;
+}
+
+.send-bar input {
+    flex: 1;
+    width: 100%;
+    min-height: 42px;
+    background: #0f172a;
+    border: 1px solid #475569;
+    padding: 12px;
+    border-radius: 8px;
+    color: #f8fafc;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.send-bar input::placeholder {
+    color: #94a3b8;
+}
+
+.send-bar input:focus {
+    border-color: var(--accent);
+    background: #15223b;
+}
+
+.send-bar button {
+    width: auto;
+    padding: 0 25px;
+}
+
+/* Barra de enfriamiento (Cooldown de 5s) */
+.cooldown-text {
+    text-align: center;
+    background: #7c2d12;
+    color: #ffedd5;
+    font-size: 0.8rem;
+    padding: 5px;
+    font-weight: 600;
+}
+
+/* Notificaciones de Chat (Mute, Errores, Comandos) */
+.chat-notification {
+    text-align: center;
+    background: rgba(15, 23, 42, 0.9);
+    color: var(--accent);
+    font-size: 0.85rem;
+    padding: 8px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--accent); /* Cambiado a borde inferior */
+    z-index: 10;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Título del Panel de Chat Global */
+.chat-panel-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    padding: 15px 20px; /* Padding consistente con el header */
+    text-align: center;
+    background: var(--bg-dark); /* Fondo oscuro como el header/send-bar */
+    border-bottom: 1px solid var(--bg-card); /* Borde separador */
+    flex-shrink: 0; /* Previene que se encoja */
+}
+
+@media (max-width: 600px) {
+    .chat-panel-title {
+        font-size: 1rem;
+        padding: 10px 12px;
+    }
+}
+
+/* ==========================================
+   PANEL LATERAL (SISTEMA PRIVADO Y TEMAS) 🛠️
+   ========================================== */
+.side-panel {
+    background: var(--bg-dark);
+    border-left: 1px solid #1e293b;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    min-height: 0;
+}
+
+.side-section h4 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.input-row {
+    display: flex;
+    gap: 8px;
+}
+
+.input-row input {
+    padding: 10px;
+    font-size: 0.85rem;
+}
+
+.input-row button {
+    width: auto;
+    font-size: 0.85rem;
+    padding: 0 15px;
+    white-space: nowrap;
+}
+
+/* Listas internas */
+.list-container {
+    margin-top: 10px;
+    background: var(--bg-card);
+    max-height: 180px;
+    border-radius: 8px;
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.empty-list {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 45px;
+}
+
+/* Filas de chats activos linkeables */
+.private-link-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-dark);
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+    border: 1px solid #334155;
+}
+
+.private-link-item:hover {
+    background: #334155;
+    border-color: var(--accent);
+}
+
+/* Grilla para selectores de Temas */
+.themes-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.theme-btn {
+    font-size: 0.85rem;
+    text-align: left;
+    padding: 12px;
+    background: var(--bg-card);
+    color: white;
+    border: 1px solid #334155;
+    border-radius: 8px;
+}
+
+.theme-btn.active {
+    border-color: var(--accent);
+    background: rgba(56, 189, 248, 0.1);
+}
+
+.theme-btn.locked {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   RESPONSIVE PARA AUTENTICACIÓN
+   ========================================== */
+@media (max-width: 600px) {
+    body.auth-page {
+        padding: 10px;
+        min-height: 100vh;
+    }
+    
+    .auth-box {
+        max-width: 100%;
+        padding: 25px 20px;
+        border-radius: 12px;
+        margin-top: 20px;
+    }
+    
+    .auth-box h2 {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+    
+    .auth-subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+    }
+    
+    .input-group {
+        margin-bottom: 15px;
+    }
+    
+    .input-group label {
+        font-size: 0.8rem;
+    }
+    
+    input {
+        padding: 12px;
+        font-size: 16px;
+        min-height: 40px;
+    }
+    
+    button {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+        min-height: 44px;
+    }
+    
+    .auth-links {
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .auth-links a {
+        font-size: 0.8rem;
+    }
+    
+    .account-created-box {
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .account-created-box h3 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+    
+    .account-created-box p {
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+    }
+    
+    .rate-limit-alert {
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .rate-limit-alert h3 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+    
+    .rate-limit-alert p {
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+    }
+}
+
+/* ==========================================
+   TEMAS VISUALES (CONFIGURACIÓN DE VARIABLES)
+   ========================================== */
+.tema-futurista {
+    --bg-main: #020617;     /* Azul espacial profundo */
+    --bg-card: #070e20;     /* Contenedores oscuros */
+    --bg-dark: #000000;     /* Negro absoluto para contraste */
+    --accent: #22d3ee;      /* Cian brillante */
+    --success: #4ade80;     /* Verde esmeralda */
+    --text-main: #e2e8f0;
+}
+
+.tema-futurista .msg-block {
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    box-shadow: 0 0 15px rgba(34, 211, 238, 0.1);
+}
+
+.tema-futurista .msg-block.me {
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    box-shadow: 0 0 15px rgba(74, 222, 128, 0.1);
+}
+
+.tema-futurista button:not(.secondary-btn) {
+    box-shadow: 0 0 10px var(--accent);
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.tema-futurista .level-badge {
+    box-shadow: 0 0 8px var(--warning);
+}
+
+.tema-cyberpunk {
+    --bg-main: #050505;     /* Fondo casi negro */
+    --bg-card: #000000;     /* Tarjetas negras */
+    --bg-dark: #000000;     
+    --accent: #facc15;      /* Amarillo Cyberpunk clásico */
+    --purple: #f472b6;      /* Rosa neón / Magenta */
+    --success: #f472b6;     /* Reutilizamos rosa para mensajes propios */
+    --text-main: #ffffff;
+}
+
+.tema-cyberpunk .chat-header, 
+.tema-cyberpunk .send-bar,
+.tema-cyberpunk .chat-panel-title {
+    border-bottom: 2px solid var(--accent) !important;
+    border-top: 2px solid var(--accent) !important;
+}
+
+.tema-cyberpunk .msg-block {
+    border: 2px solid var(--accent);
+    border-radius: 0px; /* Estética más ruda/angular */
+    background: #000;
+    clip-path: polygon(100% 0, 100% 85%, 95% 100%, 0 100%, 0 0); /* Corte diagonal en la esquina */
+}
+
+.tema-cyberpunk .msg-block.me {
+    border: 2px solid var(--purple);
+    clip-path: polygon(100% 0, 100% 100%, 5% 100%, 0 85%, 0 0);
+}
+
+.tema-cyberpunk .theme-btn.active {
+    background: var(--accent);
+    color: black;
+    box-shadow: 4px 4px 0px var(--purple);
+}
+
+.tema-cyberpunk button {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 0;
+}
+
+/* ==========================================
+   RESPONSIVE: MENÚ HAMBURGUESA Y MÓVIL (768px)
+   ========================================== */
+@media (max-width: 768px) {
+    .menu-btn-hamburguer {
+        display: block;
+    }
+
+    .chat-workspace {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .side-panel {
+        display: flex !important; /* Fuerza la visibilidad sobre el query de 850px */
+        position: fixed;
+        top: 0;
+        right: -100%; /* Oculto por defecto a la derecha */
+        width: 85%;
+        height: 100%;
+        z-index: 2000;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+        padding-top: 80px; /* Evita que el header tape el contenido del panel */
+    }
+
+    .side-panel.active {
+        right: 0; /* Desliza hacia adentro */
+    }
+
+    .chat-header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 2100;
+    }
+
+    .send-bar {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        min-height: 90px;
+        z-index: 2100;
+        padding: 15px;
+    }
+
+    .send-bar input {
+        min-height: 50px; /* Más cómodo para dedos */
+    }
+
+    .theme-btn {
+        width: 100% !important;
+    }
+
+    .global-chat-panel {
+        height: 100vh;
+        padding-top: 85px; /* Aumentado para que el header no tape el título */
+        padding-bottom: 90px; /* Espacio para barra de escritura fixed */
+        width: 100%;
+    }
+}

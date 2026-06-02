@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Privado Encriptado 🔒</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <main class="chat-box private-box">
+        <header class="chat-header">
+            <div class="user-info">
+                <span class="status-indicator online"></span>
+                <span id="private-partner-name" class="username-title">Conversación Privada</span>
+            </div>
+            <a href="index.html" class="secondary-btn" style="text-decoration: none;">Volver al Global 🌐</a>
+        </header>
+
+        <div class="global-chat-panel">
+            <div id="private-messages" class="messages-container">
+                </div>
+
+            <form id="private-message-form" class="send-bar">
+                <input type="text" id="private-input" placeholder="Envía un mensaje privado seguro..." autocomplete="off" required>
+                <button type="submit">Enviar 🔒</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="../config.js"></script>
+    <script src="privado.js"></script>
+</body>
+</html>
