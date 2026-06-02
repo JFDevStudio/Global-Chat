@@ -143,6 +143,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         chatMessages.innerHTML = ""; // Limpiar contenedor
 
+        if (data.length === 0) {
+            chatMessages.innerHTML = '<p class="empty-list">No hay mensajes aún. ¡Sé el primero en escribir! 👋</p>';
+            return;
+        }
+
         // ⚠️ OPTIMIZACIÓN: Buscamos todos los perfiles de los autores de una vez
         // para evitar hacer 50 consultas seguidas (Problema N+1) que bloquean la carga.
         const userIds = [...new Set(data.map(m => m.usuario_id))];

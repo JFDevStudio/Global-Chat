@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (session && session.user?.email_confirmed_at) {
             console.log("Sesión activa detectada, redirigiendo...");
-            window.location.href = "chat.html";
+            window.location.href = "global.html";
         }
     };
 
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 console.log("Sesión iniciada con éxito", data);
-                window.location.href = "chat.html"; // Asegúrate de que el archivo se llame así
+                window.location.href = "global.html"; 
 
             } else {
                 // --- PROCESO DE REGISTRO ---

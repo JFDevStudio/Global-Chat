@@ -578,14 +578,16 @@ button:active {
 
 /* Título del Panel de Chat Global */
 .chat-panel-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: var(--text-main);
+    color: var(--accent);
     padding: 15px 20px; /* Padding consistente con el header */
     text-align: center;
     background: var(--bg-dark); /* Fondo oscuro como el header/send-bar */
-    border-bottom: 1px solid var(--bg-card); /* Borde separador */
+    border-bottom: 2px solid var(--bg-card); /* Borde separador */
     flex-shrink: 0; /* Previene que se encoja */
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 @media (max-width: 600px) {

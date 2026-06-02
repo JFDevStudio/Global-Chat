@@ -3,68 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sala de Chat Global 🌐</title>
-    <link rel="stylesheet" href="style.css?v=1.0.1">
-    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Global Realtime Chat 💬</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
+<body class="auth-page">
+    <main class="app-container">
+        <section id="auth-screen" class="auth-box">
+            <h2>Crear Cuenta o Iniciar Sesión 🔐</h2>
+            <p class="auth-subtitle">Ingresa un correo, contraseña y tu nombre de usuario único.</p>
 
-    <main class="chat-box">
-        <header class="chat-header">
-            <div class="user-info">
-                <span id="user-display-name" class="username-title">Cargando...</span>
-                <span id="user-level-badge" class="level-badge">Nivel 1</span>
-                <span id="user-role-badge" class="role-badge">Usuario</span>
-            </div>
-            <button id="logout-btn" class="secondary-btn">Cerrar Sesión 🚪</button>
-        </header>
-
-        <div class="chat-workspace">
-            
-            <div class="global-chat-panel">
-                <h2 class="chat-panel-title">Chat Global 🌐</h2>
-                <div id="chat-messages" class="messages-container">
-                    </div>
-
-                <form id="message-form" class="send-bar">
-                    <input type="text" id="message-input" placeholder="Escribe un mensaje global..." maxlength="250" autocomplete="off" required>
-                    <button type="submit">Enviar ⚡</button>
-                </form>
-                <div id="cooldown-timer" class="cooldown-text hidden">Espera 5 segundos para enviar otro mensaje.</div>
-            </div>
-
-            <aside class="side-panel">
-                <div class="side-section">
-                    <h4>Mensajería Privada 🔒</h4>
-                    <div class="input-row">
-                        <input type="text" id="target-private-user" placeholder="Buscar usuario...">
-                        <button id="request-private-btn">Pedir Privado</button>
-                    </div>
-                    
-                    <div id="chats-activos-list" class="list-container">
-                        <p class="empty-list">No tienes chats activos.</p>
-                    </div>
-
-                    <h4 style="margin-top: 20px;">Solicitudes Pendientes ⏳</h4>
-                    <div id="solicitudes-pendientes-list" class="list-container">
-                        <p class="empty-list">No tienes solicitudes pendientes.</p>
-                    </div>
+            <form id="auth-form">
+                <div class="input-group" id="username-group">
+                    <label for="auth-username">Nombre de Usuario (Único)</label>
+                    <input type="text" id="auth-username" placeholder="Ej: JensiDev">
+                </div>
+                
+                <div class="input-group">
+                    <label for="auth-email">Correo Electrónico</label>
+                    <input type="email" id="auth-email" placeholder="tu@correo.com" required>
                 </div>
 
-                <div class="side-section">
-                    <h4>Temas Desbloqueables 🎨</h4>
-                    <div class="themes-grid">
-                        <button class="theme-btn active" data-theme="default">Clásico</button>
-                        <button class="theme-btn locked" title="Bloqueado hasta Nivel 5">Futurista (Nivel 5) 🔒</button>
-                        <button class="theme-btn locked" title="Bloqueado hasta Nivel 10">Cyberpunk (Nivel 10) 🔒</button>
-                    </div>
+                <div class="input-group">
+                    <label for="auth-password">Contraseña</label>
+                    <input type="password" id="auth-password" placeholder="Mínimo 6 caracteres" required minlength="6">
                 </div>
-            </aside>
 
-        </div>
+                <button type="submit" id="auth-submit-btn">Iniciar Sesión 🚀</button>
+                <p id="auth-error" class="error-msg"></p>
+            </form>
+
+            <div class="auth-links">
+                <a href="#" id="toggle-auth-mode">¿No tienes cuenta? Regístrate aquí</a>
+                <a href="#" class="forgot-pass">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <div id="account-created-box" class="account-created-box hidden">
+                <h3>¡Cuenta Creada! ✨</h3>
+                <p>Se ha enviado un correo de confirmación. Verifica tu bandeja de entrada antes de intentar entrar.</p>
+                <button id="continue-to-login-btn" class="secondary-btn">Volver al Login</button>
+            </div>
+            <div id="rate-limit-box" class="rate-limit-alert hidden">
+                <h3>Demasiados Intentos ⏳</h3>
+                <p>Has hecho muchas solicitudes en poco tiempo. Por favor, espera un momento.</p>
+                <button id="close-rate-limit-btn" class="secondary-btn">Cerrar</button>
+            </div>
+        </section>
+
     </main>
 
-    <script defer src="config.js?v=1.0.1"></script>
-    <script defer src="chat.js?v=1.0.1"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
 </body>
 </html>
