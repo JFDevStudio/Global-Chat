@@ -119,8 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 console.log("Sesión iniciada con éxito", data);
-                // Redirigir al archivo del chat en la raíz
-                window.location.href = "chat.html";
+                window.location.href = "chat.html"; // Asegúrate de que el archivo se llame así
 
             } else {
                 // --- PROCESO DE REGISTRO ---

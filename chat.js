@@ -142,21 +142,42 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         chatMessages.innerHTML = ""; // Limpiar contenedor
-        // Usamos un bucle for...of para esperar que cada mensaje se pinte antes de seguir
-        for (const msg of data) {
-            await pintarMensaje(msg);
+
+        // ⚠️ OPTIMIZACIÓN: Buscamos todos los perfiles de los autores de una vez
+        // para evitar hacer 50 consultas seguidas (Problema N+1) que bloquean la carga.
+        const userIds = [...new Set(data.map(m => m.usuario_id))];
+        const { data: perfiles, error: errPerfiles } = await supabase
+            .from("perfiles")
+            .select("id, muteado_hasta, baneado, rol")
+            .in("id", userIds);
+
+        if (errPerfiles) {
+            console.error("Error cargando perfiles del historial:", errPerfiles);
+            return;
         }
+
+        const perfilesMap = {};
+        perfiles.forEach(p => perfilesMap[p.id] = p);
+
+        data.forEach(msg => {
+            pintarMensaje(msg, perfilesMap[msg.usuario_id]);
+        });
+
         irAlFondoChat();
     }
 
     // 4. FUNCIÓN PARA PINTAR EL MENSAJE EN EL HTML (Con validación de mute/ban)
-    async function pintarMensaje(msg) {
-        // Verificar si el usuario está muteado o baneado
-        const { data: perfilUsuario } = await supabase
-            .from("perfiles")
-            .select("muteado_hasta, baneado, rol")
-            .eq("id", msg.usuario_id)
-            .single();
+    async function pintarMensaje(msg, perfilUsuario = null) {
+        // Si no tenemos el perfil (mensajes nuevos), lo buscamos. 
+        // Si viene del historial, ya lo tenemos en caché.
+        if (!perfilUsuario) {
+            const { data } = await supabase
+                .from("perfiles")
+                .select("muteado_hasta, baneado, rol")
+                .eq("id", msg.usuario_id)
+                .single();
+            perfilUsuario = data;
+        }
 
         if (!perfilUsuario) return; // Usuario no encontrado
 
