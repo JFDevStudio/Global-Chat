@@ -98,13 +98,32 @@ document.addEventListener("DOMContentLoaded", async () => {
             .single();
 
         if (error) {
-            console.error("Error cargando perfil:", error);
-            await supabase.auth.signOut();
-            window.location.href = "index.html"; 
-            return;
+            // Error PGRST116 significa que no se encontró ninguna fila (Perfil inexistente)
+            if (error.code === 'PGRST116') {
+                console.warn("Perfil no encontrado. Creando uno por defecto para usuario manual...");
+                const { data: newProfile, error: insertError } = await supabase
+                    .from("perfiles")
+                    .insert([{ 
+                        id: userId, 
+                        username: session.user.email.split('@')[0] + "_new", 
+                        rol: 'usuario', 
+                        nivel: 1, 
+                        experiencia: 0 
+                    }])
+                    .select()
+                    .single();
+                
+                if (insertError) throw insertError;
+                miPerfil = newProfile;
+            } else {
+                console.error("Error cargando perfil:", error);
+                await supabase.auth.signOut();
+                window.location.href = "index.html"; 
+                return;
+            }
+        } else {
+            miPerfil = data;
         }
-
-        miPerfil = data;
 
         // 🛡️ SEGURIDAD: Bloqueo inmediato si el usuario está baneado
         if (miPerfil.baneado) {
