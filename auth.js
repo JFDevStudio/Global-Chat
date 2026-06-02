@@ -127,32 +127,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     email, 
                     password,
                     options: {
-                        emailRedirectTo: 'https://jfdevstudio.github.io/Global-Chat/confirmado.html'
+                        emailRedirectTo: 'https://jfdevstudio.github.io/Global-Chat/confirmado.html',
+                        // Pasamos el username en los metadatos para que el Trigger de SQL lo capture
+                        data: { username: username }
                     }
                 });
                 if (authErrorResult) throw authErrorResult;
-
-                const user = authData.user;
-                if (!user) throw new Error("No se pudo crear el usuario. Intenta de nuevo.");
-
-                // c) Insertar el perfil personalizado del usuario en nuestra tabla 'perfiles'
-                const { error: profileError } = await supabase
-                    .from("perfiles")
-                    .insert([
-                        { 
-                            id: user.id, 
-                            username: username, 
-                            rol: 'usuario', // Rol base por defecto
-                            nivel: 1, 
-                            experiencia: 0 
-                        }
-                    ]);
-
-                if (profileError) {
-                    // Si el username ya existe o falla, borramos el auth para no dejar cuentas fantasma
-                    await supabase.rpc('delete_user_cascade'); // (Opcional, Supabase maneja restricciones)
-                    throw new Error("El nombre de usuario ya está en uso. Elige otro.");
-                }
 
                 await supabase.auth.signOut();
                 mostrarCuentaCreada();
