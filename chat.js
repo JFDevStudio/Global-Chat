@@ -399,7 +399,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             ]);
 
         if (error) {
-            alert("Error al enviar: " + error.message);
+            mostrarAviso("Error al enviar mensaje. ❌");
             return;
         }
 
@@ -511,7 +511,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (salaExistente.estado === "aceptado") {
                     window.location.href = `privado.html?room=${salaExistente.id}`;
                 } else if (salaExistente.estado === "pendiente") {
-                    alert("Solicitud ya enviada. Esperando que acepte...");
+                    mostrarAviso("Solicitud ya enviada. Esperando respuesta... ⏳");
                 }
                 targetPrivateUser.value = "";
                 return;
@@ -531,7 +531,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (errorSala) throw errorSala;
 
-            alert("Solicitud enviada. Esperando aprobación...");
+            mostrarAviso("¡Solicitud enviada con éxito! 📨");
             targetPrivateUser.value = "";
             await cargarSalasPrivadasActivas();
 
@@ -586,16 +586,36 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (sala.estado === "aceptado") {
                 // CHATS ACTIVOS
+                const div = document.createElement("div");
+                div.style.display = "flex";
+                div.style.gap = "5px";
+                div.style.marginBottom = "8px";
+
                 const a = document.createElement("a");
                 a.className = "private-link-item";
                 a.href = `privado.html?room=${sala.id}`;
                 a.innerHTML = `💬 ${perfilOtro.username} →`;
+                a.style.flex = "1";
                 
-                // Limpiar el empty-list si es la primera vez
-                if (chatActivosList.innerHTML.includes("empty-list")) {
-                    chatActivosList.innerHTML = "";
-                }
-                chatActivosList.appendChild(a);
+                const btnBorrar = document.createElement("button");
+                btnBorrar.className = "secondary-btn";
+                btnBorrar.style.background = "#ef4444";
+                btnBorrar.style.padding = "8px 10px";
+                btnBorrar.style.width = "auto";
+                btnBorrar.innerHTML = "🗑️";
+                btnBorrar.title = "Borrar este chat";
+                btnBorrar.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    if(confirm(`¿Estás seguro de que quieres borrar el chat con ${perfilOtro.username}?`)) {
+                        await rechazarSolicitud(sala.id);
+                    }
+                });
+
+                div.appendChild(a);
+                div.appendChild(btnBorrar);
+                
+                if (chatActivosList.innerHTML.includes("empty-list")) chatActivosList.innerHTML = "";
+                chatActivosList.appendChild(div);
 
             } else if (sala.estado === "pendiente" && sala.solicitado_por !== userId) {
                 // SOLICITUDES PENDIENTES (solo las que me enviaron a mí, no las que envié yo)

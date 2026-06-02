@@ -2,8 +2,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const recoveryForm = document.getElementById("recovery-form");
     const newPasswordInput = document.getElementById("new-password");
     const recoverySubmitBtn = document.getElementById("recovery-submit-btn");
-    const recoveryMsg = document.getElementById("recovery-msg");
+    const recoverySuccessBox = document.getElementById("recovery-success-box");
     const recoveryError = document.getElementById("recovery-error");
+    const recoveryTitle = document.getElementById("recovery-title");
+    const recoverySubtitle = document.getElementById("recovery-subtitle");
+    const goToLoginBtn = document.getElementById("go-to-login-btn");
 
     const supabase = window.supabaseClient;
 
@@ -17,10 +20,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
+    goToLoginBtn.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
+
     recoveryForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         recoveryError.classList.add("hidden");
-        recoveryMsg.classList.add("hidden");
         recoverySubmitBtn.disabled = true;
 
         const nuevaPassword = newPasswordInput.value.trim();
@@ -31,13 +37,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (error) throw error;
 
-            recoveryMsg.innerText = "¡Contraseña actualizada con éxito! Redirigiendo al login en 3 segundos...";
-            recoveryMsg.classList.remove("hidden");
+            // Ocultar elementos del formulario y mostrar el cuadro de éxito
             recoveryForm.classList.add("hidden");
-
-            setTimeout(() => {
-                window.location.href = "index.html";
-            }, 3000);
+            recoveryTitle.classList.add("hidden");
+            recoverySubtitle.classList.add("hidden");
+            recoverySuccessBox.classList.remove("hidden");
 
         } catch (error) {
             recoveryError.innerText = "Error: " + error.message;

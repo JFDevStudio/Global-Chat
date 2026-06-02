@@ -9,8 +9,8 @@
 </head>
 <body class="auth-page">
     <section class="auth-box">
-        <h2>Nueva Contraseña 🔑</h2>
-        <p class="auth-subtitle">Ingresa tu nueva contraseña para recuperar el acceso a tu cuenta.</p>
+        <h2 id="recovery-title">Nueva Contraseña 🔑</h2>
+        <p id="recovery-subtitle" class="auth-subtitle">Ingresa tu nueva contraseña para recuperar el acceso a tu cuenta.</p>
         
         <form id="recovery-form">
             <div class="input-group">
@@ -19,7 +19,13 @@
             </div>
             <button type="submit" id="recovery-submit-btn">Actualizar Contraseña 🚀</button>
         </form>
-        <p id="recovery-msg" class="success-msg hidden"></p>
+
+        <div id="recovery-success-box" class="account-created-box hidden">
+            <h3>¡Contraseña Actualizada! ✨</h3>
+            <p>Tu contraseña ha sido cambiada con éxito. Ya puedes volver a entrar al chat.</p>
+            <button id="go-to-login-btn" class="secondary-btn">Ir al Login 🚪</button>
+        </div>
+
         <p id="recovery-error" class="error-msg hidden"></p>
     </section>
 
